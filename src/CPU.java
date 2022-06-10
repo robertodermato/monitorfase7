@@ -6,7 +6,6 @@ public class CPU {
     public int maxInt;          // criado para podermos simular overflow
     private int[] paginasAlocadas;
     private int tamPaginaMemoria;
-    private InterruptHandler interruptHandler;
 
     // usado pelo escalonador
     int delta;
@@ -15,6 +14,8 @@ public class CPU {
 
     // cria variável interrupção
     public Sistema.Interrupts interrupts;
+
+    private InterruptHandler interruptHandler;
 
     private Sistema.Word[] m;   // CPU acessa MEMORIA, guarda referencia 'm' a ela. memoria nao muda. ee sempre a mesma.
 
@@ -31,7 +32,6 @@ public class CPU {
         delta = 0;
         this.deltaMax = deltaMax;
         escalonadorState = false;
-
         this.interruptHandler = interruptHandler;
     }
 

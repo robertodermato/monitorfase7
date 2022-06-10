@@ -5,7 +5,10 @@ public class InterruptHandler {
     private GerenciadorProcessos gerProc;
     private Escalonador escalonador;
 
-    public InterruptHandler(GerenciadorMemoria gerMem, GerenciadorProcessos gerProc, Escalonador escalonador){
+    public InterruptHandler(){
+    }
+
+    public void setAttributes(GerenciadorMemoria gerMem, GerenciadorProcessos gerProc, Escalonador escalonador){
         this.gerMem = gerMem;
         this.gerProc = gerProc;
         this.escalonador = escalonador;

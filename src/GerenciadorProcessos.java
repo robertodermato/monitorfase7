@@ -12,9 +12,9 @@ public class GerenciadorProcessos {
     public int posicaoEscalonador;
     public int tamPagina;
 
-    public Sistema.CPU cpu;
+    public CPU cpu;
 
-    public GerenciadorProcessos(GerenciadorMemoria gm, Sistema.Word[] memory, Sistema.CPU cpu) {
+    public GerenciadorProcessos(GerenciadorMemoria gm, Sistema.Word[] memory, CPU cpu) {
         process_id=0;
 
         this.cpu = cpu;
