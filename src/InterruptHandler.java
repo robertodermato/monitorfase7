@@ -1,10 +1,10 @@
 import java.util.Scanner;
 
 public class InterruptHandler {
-    private Sistema.GerenciadorMemoria gerMem;
-    private Sistema.GerenciadorProcessos gerProc;
+    private GerenciadorMemoria gerMem;
+    private GerenciadorProcessos gerProc;
 
-    public InterruptHandler(Sistema.GerenciadorMemoria gerMem, Sistema.GerenciadorProcessos gerProc){
+    public InterruptHandler(GerenciadorMemoria gerMem, GerenciadorProcessos gerProc){
         this.gerMem = gerMem;
         this.gerProc = gerProc;
     }
