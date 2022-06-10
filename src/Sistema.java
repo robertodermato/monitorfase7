@@ -506,9 +506,10 @@ public class Sistema {
         bloqueados = new LinkedList();
         gm = new GerenciadorMemoria(memory, tamanhoPagina);
         gp = new GerenciadorProcessos(gm, gm.mem, cpu);
-        interruptHandler = new InterruptHandler(gm, gp);
+        escalonador = new Escalonador(gp);
+        interruptHandler = new InterruptHandler(gm, gp, escalonador);
 
-        this.escalonador = new Escalonador(prontos, cpu);
+        this.escalonador = new Escalonador(gp);
     }
 
 
@@ -616,53 +617,7 @@ public class Sistema {
         for (int i=0; i<paginasAlocadas.length; i++){
             gm.dumpPagina(gm.mem, paginasAlocadas[i]);
         }
-
     }
-
-    // Fase 6 - Escalonador rodando no Sistema
-    public void runEscalonador() {
-        System.out.println("Iniciando Escalonador");
-        escalonador.run();
-    }
-
-    public class Escalonador {
-
-        private LinkedList<PCB> prontos;
-        private int pointer;
-        private PCB runningProcess;
-        private CPU cpu;
-
-        public Escalonador(LinkedList<PCB> prontos, CPU cpu) {
-            this.prontos = prontos;
-            this.pointer = 0;
-            this.cpu = cpu;
-        }
-
-        public void run() {
-            while(true){
-                if(prontos.isEmpty()==false) break; //Se esvaziou lista de prontos, termina.
-                PCB pcb = prontos.get(pointer);
-                this.runningProcess = pcb;
-                int old = pointer;
-                pointer = pointer + 1;
-                prontos.remove(old);
-                cpu.setContext(cpu.getPc(), pcb.getPaginasAlocadas(), cpu.getReg(), cpu.getIr(), cpu.getInterrupts());
-            }
-        }
-
-        public PCB getRunningProcess() {
-            return runningProcess;
-        }
-
-        public void setRunningProcessAsNull(){
-            this.runningProcess = null;
-        }
-
-        public LinkedList<PCB> getProntos() {
-            return prontos;
-        }
-    }
-
     // -------------------  S I S T E M A - fim --------------------------------------------------------------
 
 }

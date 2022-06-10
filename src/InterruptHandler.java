@@ -3,10 +3,12 @@ import java.util.Scanner;
 public class InterruptHandler {
     private GerenciadorMemoria gerMem;
     private GerenciadorProcessos gerProc;
+    private Escalonador escalonador;
 
-    public InterruptHandler(GerenciadorMemoria gerMem, GerenciadorProcessos gerProc){
+    public InterruptHandler(GerenciadorMemoria gerMem, GerenciadorProcessos gerProc, Escalonador escalonador){
         this.gerMem = gerMem;
         this.gerProc = gerProc;
+        this.escalonador = escalonador;
     }
 
     public void dump(Sistema.Word w) {
@@ -34,7 +36,7 @@ public class InterruptHandler {
         switch (interrupts) {
             case INT_SCHEDULER:
                 System.out.println("Escalonador acionado");
-                gerProc.runEscalonador(programCounter, registers, instructionRegister, interrupts, gerProc.running.getPaginasAlocadas());
+                escalonador.runEscalonador(programCounter, registers, instructionRegister, interrupts, gerProc.running.getPaginasAlocadas());
                 return true;
 
             case INT_STOP:
