@@ -152,6 +152,10 @@ public class CPU {
         }
     }
 
+    public void callIOInterrupt() {
+        interruptHandler.handleInterrupt(reg, ir, m, pc, interrupts);
+    }
+
     public void run() {
 
         boolean run = true;
