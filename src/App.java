@@ -1,6 +1,10 @@
+import java.util.Scanner;
+import java.util.concurrent.Semaphore;
+
 public class App {
 
-    public static void main(String args[]) {
+    public static void main(String[] args) throws InterruptedException {
+
         // Variáveis
         int tamanhoDamemoria = 1024;
         int tamanhoDaPaginadeMemoria = 16;
@@ -10,78 +14,96 @@ public class App {
 
         Sistema s = new Sistema(tamanhoDamemoria, tamanhoDaPaginadeMemoria, maxInt, quantidadeRegistradores, deltaMax);
 
-        //-------------------------------------------------------------------------------
-        // Fase 1
-        //s.roda(Sistema.progs.fatorial);
-        //s.roda(Sistema.progs.fibonacci2);
-        //s.roda(Sistema.progs.fatorial2);
-        //s.roda(Sistema.progs.bubbleSort);
+        BootAnimation ba = new BootAnimation();
+        ba.load();
 
-        //----------------------------------------------------------------------------------
-        // Fase 2 - Testes de Interrupções
-        //s.roda(Sistema.progs.invalidAddressTest);
-        //s.roda(Sistema.progs.overflowTest);
-        //s.roda(Sistema.progs.invalidRegisterTest);
+        Scanner in = new Scanner(System.in);
 
-        //----------------------------------------------------------------------------------------
-        // Fase 3 - Testes de Chamadas de Sistema
-        //s.roda(Sistema.progs.trapTestOutput);
-        //s.roda(Sistema.progs.trapTestInput);
-        //s.roda(Sistema.progs.fibonacciComOutput);
-        //s.roda(Sistema.progs.fatorialComInput);
+        while (true) {
+            System.out.println("");
+            System.out.println("---------------------------------------------");
 
-        //------------------------------------------------------------------------------------------
-        // Fase 4 - Testa o Gerenciador de Memória - mockamos frames 0 e 2 como sempre ocupados
-        //s.roda(Sistema.progs.bubbleSort);
-        //s.roda(Sistema.progs.fatorial);
-        //s.roda(Sistema.progs.fatorial);
-        //s.roda(Sistema.progs.fatorial);
-        //s.roda(Sistema.progs.fatorial);
-        //s.roda(Sistema.progs.fibonacci10);
-        //s.roda(Sistema.progs.fibonacci10);
-        //s.roda(Sistema.progs.fibonacci10);
-        //s.roda(Sistema.progs.progMinimo);
-        //s.roda(Sistema.progs.progMinimo);
-        //s.roda(Sistema.progs.progMinimo);
-        //s.roda(Sistema.progs.bubbleSort);
-        //s.roda(Sistema.progs.bubbleSort);
-        //s.roda(Sistema.progs.bubbleSort);
+            System.out.println("\nDigite um comando. Comandos disponíveis e exemplos de uso:\n\n" +
+                    "- cria nomeDePrograma - exemplo: cria fibo\n" +
+                    "- nomes de programas disponíveis: fibo, fato, bub\n" +
+                    "- executa id          - exemplo: exe 2\n" +
+                    "- dump id             - exemplo: dump 1\n" +
+                    "- dumpM inicio fim    - exemplo: dumpM 2,5\n" +
+                    "- desaloca id         - exemplo: des 1\n" +
+                    "- listaProcessos      - exemplo: lista\n" +
+                    "- executa escalonador - exemplo: esca\n" +
+                    "- end                 - exemplo: end");
 
-        // Para testar falta de memória
-        /*
-        for (int i=0; i<15; i++){
-            s.roda(Sistema.progs.bubbleSort);
+            String palavra = in.nextLine();
+
+            if (palavra.equals("lista")){
+                s.listaProcessos();
+            }
+
+            //s.executaComEscalonador();
+            else if (palavra.equals("esca")){
+                s.executaComEscalonador();
+            }
+
+            else if (palavra.equals("end")){
+                System.out.println("Goodbye!");
+                break;
+            }
+
+            else if (palavra.contains(" ")){
+                String [] input = palavra.split(" ");
+                String comando = input[0];
+                String arg = input[1];
+
+                if (comando.equals("cria")){
+                    if (arg.equals("fibo")){
+                        s.cria(Sistema.progs.fibonacci10);
+                    }
+                    else if (arg.equals("fato")){
+                        s.cria(Sistema.progs.fatorial);
+                    }
+                    else if (arg.equals("bub")){
+                        s.cria(Sistema.progs.bubbleSort);
+                    }
+                    else{
+                        System.out.println("Programa desconhecido");
+                    }
+                }
+
+                //s.executa(2);
+                else if (comando.equals("exe")){
+                    int processo = Integer.parseInt(arg);
+                    s.executa(processo);
+                }
+
+                //s.dump(2);
+                else if (comando.equals("dump")){
+                    int processo = Integer.parseInt(arg);
+                    s.dump(processo);
+                }
+
+                //s.desaloca(2);
+                else if (comando.equals("des")){
+                    int processo = Integer.parseInt(arg);
+                    s.desaloca(processo);
+                }
+
+                //s.dumpM(2,5);
+                else if (comando.equals("dumpM")){
+                    String [] numeros = arg.split(",");
+                    int inicio = Integer.parseInt(numeros[0]);
+                    int fim = Integer.parseInt(numeros[1]);
+                    s.dumpM(inicio,fim);
+                }
+
+                else{
+                    System.out.println("Comando desconhecido!");
+                }
+            }
+
+            else{
+                System.out.println("Comando desconhecido!");
+            }
         }
-         */
-
-        //--------------------------------------------------------------------------------
-        // Fase 5 - Gerenciador de Processos
-        //s.cria(Sistema.progs.bubbleSort);
-        //s.cria(Sistema.progs.bubbleSort);
-        //s.cria(Sistema.progs.bubbleSort);
-        //s.cria(Sistema.progs.fatorialComInput);
-        //s.cria(Sistema.progs.fatorial);
-        //s.cria(Sistema.progs.fatorial);
-        //s.cria(Sistema.progs.fatorial);
-        //s.cria(Sistema.progs.fatorial);
-        //s.cria(Sistema.progs.bubbleSort);
-        //s.executa(3);
-        //s.listaProcessos();
-        //s.dump(2);
-        //s.dumpM(2,5);
-        //s.desaloca(2);
-
-        //---------------------------------------------------------------------------------------
-        // Fase 6 - Escalonador
-        //s.cria(Sistema.progs.bubbleSort);
-        //s.cria(Sistema.progs.bubbleSort);
-        //s.cria(Sistema.progs.bubbleSort);
-        s.cria(Sistema.progs.fatorial);
-        s.cria(Sistema.progs.fatorial);
-        s.cria(Sistema.progs.fatorial);
-        //s.cria(Sistema.progs.fatorial);
-        s.cria(Sistema.progs.bubbleSort);
-
-        s.executaComEscalonador();
     }
 }

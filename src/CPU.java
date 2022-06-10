@@ -13,13 +13,13 @@ public class CPU {
     boolean escalonadorState;
 
     // cria variável interrupção
-    public Sistema.Interrupts interrupts;
+    public Interrupts interrupts;
 
     private InterruptHandler interruptHandler;
 
     private Sistema.Word[] m;   // CPU acessa MEMORIA, guarda referencia 'm' a ela. memoria nao muda. ee sempre a mesma.
 
-    public CPU(Sistema.Word[] _m, int tamPaginaMemoria, int maxInt, int deltaMax, int [] reg, Sistema.Interrupts interrupts,
+    public CPU(Sistema.Word[] _m, int tamPaginaMemoria, int maxInt, int deltaMax, int [] reg, Interrupts interrupts,
                Sistema.Word ir, InterruptHandler interruptHandler) {     // ref a MEMORIA e interrupt handler passada na criacao da CPU
         m = _m;                // usa o atributo 'm' para acessar a memoria.
         reg = new int[10];        // aloca o espaço dos registradores
@@ -35,7 +35,7 @@ public class CPU {
         this.interruptHandler = interruptHandler;
     }
 
-    public void setContext(int _pc, int [] paginasAlocadas, int [] registradores, Sistema.Word instructionRegister, Sistema.Interrupts interrupt) {  // no futuro esta funcao vai ter que ser
+    public void setContext(int _pc, int [] paginasAlocadas, int [] registradores, Sistema.Word instructionRegister, Interrupts interrupt) {  // no futuro esta funcao vai ter que ser
         pc = _pc;                                   // limite e pc (deve ser zero nesta versão)
         this.paginasAlocadas = paginasAlocadas;
         this.reg = registradores;
@@ -66,7 +66,7 @@ public class CPU {
         this.escalonadorState = state;
     }
 
-    public Sistema.Interrupts getInterrupts(){
+    public Interrupts getInterrupts(){
         return interrupts;
     }
 
@@ -110,7 +110,7 @@ public class CPU {
 
     private boolean isRegisterValid(int register) {
         if (register < 0 || register >= reg.length) {
-            interrupts = Sistema.Interrupts.INT_INVALID_INSTRUCTION;
+            interrupts = Interrupts.INT_INVALID_INSTRUCTION;
             return false;
         }
         return true;
@@ -118,7 +118,7 @@ public class CPU {
 
     private boolean isAddressValid(int address) {
         if (address < 0 || address >= m.length) {
-            interrupts = Sistema.Interrupts.INT_INVALID_ADDRESS;
+            interrupts = Interrupts.INT_INVALID_ADDRESS;
             return false;
         }
         return true;
@@ -126,7 +126,7 @@ public class CPU {
 
     private boolean isNumberValid(int number) {
         if (number < maxInt * -1 || number > maxInt) {
-            interrupts = Sistema.Interrupts.INT_OVERFLOW;
+            interrupts = Interrupts.INT_OVERFLOW;
             return false;
         }
         return true;
@@ -189,7 +189,7 @@ public class CPU {
 
                 case STD: // [A] ← Rs
                     if (isRegisterValid(ir.r1) && isAddressValid(traduzEndereco(ir.p)) && isNumberValid(reg[ir.r1])) {
-                        m[traduzEndereco(ir.p)].opc = Sistema.Opcode.DATA;
+                        m[traduzEndereco(ir.p)].opc = Opcode.DATA;
                         m[traduzEndereco(ir.p)].p = reg[ir.r1];
                         pc++;
                         break;
@@ -202,7 +202,7 @@ public class CPU {
                         pc++;
                         break;
                     } else {
-                        interrupts = Sistema.Interrupts.INT_OVERFLOW;
+                        interrupts = Interrupts.INT_OVERFLOW;
                         pc++;
                         break;
                     }
@@ -226,7 +226,7 @@ public class CPU {
                         pc++;
                         break;
                     } else {
-                        interrupts = Sistema.Interrupts.INT_OVERFLOW;
+                        interrupts = Interrupts.INT_OVERFLOW;
                         pc++;
                         break;
                     }
@@ -234,7 +234,7 @@ public class CPU {
 
                 case STX: // [Rd] ←Rs
                     if (isRegisterValid(ir.r1) && isRegisterValid(ir.r2) && isAddressValid(traduzEndereco(reg[ir.r1]))) {
-                        m[traduzEndereco(reg[ir.r1])].opc = Sistema.Opcode.DATA;
+                        m[traduzEndereco(reg[ir.r1])].opc = Opcode.DATA;
                         m[traduzEndereco(reg[ir.r1])].p = reg[ir.r2];
                         pc++;
                         break;
@@ -255,7 +255,7 @@ public class CPU {
                         pc++;
                         break;
                     } else {
-                        interrupts = Sistema.Interrupts.INT_OVERFLOW;
+                        interrupts = Interrupts.INT_OVERFLOW;
                         pc++;
                         break;
                     }
@@ -266,7 +266,7 @@ public class CPU {
                         pc++;
                         break;
                     } else {
-                        interrupts = Sistema.Interrupts.INT_OVERFLOW;
+                        interrupts = Interrupts.INT_OVERFLOW;
                         pc++;
                         break;
                     }
@@ -375,7 +375,7 @@ public class CPU {
                     break;
 
                 case TRAP:
-                    interrupts = Sistema.Interrupts.INT_SYSTEM_CALL;
+                    interrupts = Interrupts.INT_SYSTEM_CALL;
                     pc++;
                     break;
 
@@ -385,13 +385,13 @@ public class CPU {
 
                 default:
                     // opcode desconhecido
-                    interrupts = Sistema.Interrupts.INT_INVALID_INSTRUCTION;
+                    interrupts = Interrupts.INT_INVALID_INSTRUCTION;
             }
 
             // VERIFICA INTERRUPÇÃO !!! - TERCEIRA FASE DO CICLO DE INSTRUÇÕES
-            if (ir.opc == Sistema.Opcode.STOP) {
+            if (ir.opc == Opcode.STOP) {
                 if (escalonadorState==true){
-                    interrupts = Sistema.Interrupts.INT_STOP;
+                    interrupts = Interrupts.INT_STOP;
                 }
                 else
                     break; // break sai do loop da cpu
@@ -400,12 +400,12 @@ public class CPU {
             // Aciona o Escalonador
             if (delta==deltaMax && escalonadorState==true){
                 delta=0;
-                interrupts = Sistema.Interrupts.INT_SCHEDULER;
+                interrupts = Interrupts.INT_SCHEDULER;
             }
 
-            if (interrupts != Sistema.Interrupts.INT_NONE) {
+            if (interrupts != Interrupts.INT_NONE) {
                 run = interruptHandler.handleInterrupt(reg, ir, m, pc, interrupts);
-                interrupts = Sistema.Interrupts.INT_NONE; // sai da chamada de sistema. talvez seja preciso criar um handler pra system call
+                interrupts = Interrupts.INT_NONE; // sai da chamada de sistema. talvez seja preciso criar um handler pra system call
             }
         }
     }

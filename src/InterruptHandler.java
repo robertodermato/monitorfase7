@@ -35,7 +35,7 @@ public class InterruptHandler {
         }
     }
 
-    public boolean handleInterrupt(int[] registers, Sistema.Word instructionRegister, Sistema.Word[] memory, int programCounter, Sistema.Interrupts interrupts) {
+    public boolean handleInterrupt(int[] registers, Sistema.Word instructionRegister, Sistema.Word[] memory, int programCounter, Interrupts interrupts) {
         switch (interrupts) {
             case INT_SCHEDULER:
                 System.out.println("Escalonador acionado");

@@ -10,7 +10,7 @@ public class Escalonador {
         this.gp = gp;
     }
 
-    public void runEscalonador(int programCounter, int [] registradores, Sistema.Word instructionRegister, Sistema.Interrupts interrupt, int[] paginasAlocadas){
+    public void runEscalonador(int programCounter, int [] registradores, Sistema.Word instructionRegister, Interrupts interrupt, int[] paginasAlocadas){
         gp.running = gp.prontos.get(posicaoEscalonador);
 
         // debug

@@ -5,9 +5,9 @@ public class PCB {
     public int[] paginasAlocadas;
     public int[] registradores;
     public Sistema.Word instructionRegister;
-    public Sistema.Interrupts interrupt;
+    public Interrupts interrupt;
 
-    public PCB(int id, int[]paginasAlocadas, int pc, int [] reg, Sistema.Word ir, Sistema.Interrupts interrupt) {
+    public PCB(int id, int[]paginasAlocadas, int pc, int [] reg, Sistema.Word ir, Interrupts interrupt) {
         this.id= id;
         this.paginasAlocadas = paginasAlocadas;
         this.programCounter = pc;
@@ -36,11 +36,11 @@ public class PCB {
         return instructionRegister;
     }
 
-    public Sistema.Interrupts getInterrupt(){
+    public Interrupts getInterrupt(){
         return interrupt;
     }
 
-    public void setContext (int programCounter, int[] registradores, Sistema.Word instructionRegister, Sistema.Interrupts interrupt){
+    public void setContext (int programCounter, int[] registradores, Sistema.Word instructionRegister, Interrupts interrupt){
         this.programCounter = programCounter;
         this.registradores =registradores;
         this.instructionRegister = instructionRegister;

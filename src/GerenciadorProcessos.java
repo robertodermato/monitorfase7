@@ -96,7 +96,7 @@ public class GerenciadorProcessos {
         }
 
         // referências problemáticas aqui??? vm.cpu...
-        PCB processo = new PCB(process_id, paginasAlocadas, 0, new int[10], new Sistema.Word(Sistema.Opcode.___,-1,-1,-1), Sistema.Interrupts.INT_NONE);
+        PCB processo = new PCB(process_id, paginasAlocadas, 0, new int[10], new Sistema.Word(Opcode.___,-1,-1,-1), Interrupts.INT_NONE);
         //PCB processo = new PCB(process_id, paginasAlocadas, vm.cpu.getPc(), vm.cpu.getReg(), vm.cpu.getIr(), vm.cpu.getInterrupts());
         prontos.add(processo);
 
@@ -127,7 +127,7 @@ public class GerenciadorProcessos {
         // reseta as posições da memória
         for(int i = 0; i < paginasAlocadas.length; i ++) {
             for (int j = tamPagina * paginasAlocadas[i]; j < tamPagina * (paginasAlocadas[i] + 1); j++) {
-                memory[j].opc = Sistema.Opcode.___;
+                memory[j].opc = Opcode.___;
                 memory[j].r1 = -1;
                 memory[j].r2 = -1;
                 memory[j].p = -1;
@@ -145,7 +145,7 @@ public class GerenciadorProcessos {
         int [] paginasAlocadasDoRunning = running.getPaginasAlocadas();
         int [] registradoresdoRunning = running.getRegistradores();
         Sistema.Word instructionRegisterDoRunning = running.getInstructionRegister();
-        Sistema.Interrupts interruptsDoRunning = running.getInterrupt();
+        Interrupts interruptsDoRunning = running.getInterrupt();
 
         cpu.setContext(programCounterDoRunning, paginasAlocadasDoRunning, registradoresdoRunning, instructionRegisterDoRunning, interruptsDoRunning);
     }
