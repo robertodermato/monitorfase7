@@ -2,7 +2,7 @@ import java.util.LinkedList;
 
 public class GerenciadorProcessos {
     private GerenciadorMemoria gm;
-    private Sistema.Word[] memory;
+    private Word[] memory;
 
     public LinkedList<PCB> prontos;
     private LinkedList<PCB> bloqueados;
@@ -14,7 +14,7 @@ public class GerenciadorProcessos {
 
     public CPU cpu;
 
-    public GerenciadorProcessos(GerenciadorMemoria gm, Sistema.Word[] memory, CPU cpu) {
+    public GerenciadorProcessos(GerenciadorMemoria gm, Word[] memory, CPU cpu) {
         process_id=0;
 
         this.cpu = cpu;
@@ -72,7 +72,7 @@ public class GerenciadorProcessos {
     }
 
     // Se o processo não foi criado por falta de memória, retorna -1, caso contrário retorna o número do processo criado
-    public int criaProcesso(Sistema.Word[] programa){
+    public int criaProcesso(Word[] programa){
         int[] paginasAlocadas = gm.aloca(programa);
 
         // Se o processo não foi criado por falta de memória, retorna -1
@@ -96,7 +96,7 @@ public class GerenciadorProcessos {
         }
 
         // referências problemáticas aqui??? vm.cpu...
-        PCB processo = new PCB(process_id, paginasAlocadas, 0, new int[10], new Sistema.Word(Opcode.___,-1,-1,-1), Interrupts.INT_NONE);
+        PCB processo = new PCB(process_id, paginasAlocadas, 0, new int[10], new Word(Opcode.___,-1,-1,-1), Interrupts.INT_NONE);
         //PCB processo = new PCB(process_id, paginasAlocadas, vm.cpu.getPc(), vm.cpu.getReg(), vm.cpu.getIr(), vm.cpu.getInterrupts());
         prontos.add(processo);
 
@@ -144,7 +144,7 @@ public class GerenciadorProcessos {
         int programCounterDoRunning = running.getProgramCounter();
         int [] paginasAlocadasDoRunning = running.getPaginasAlocadas();
         int [] registradoresdoRunning = running.getRegistradores();
-        Sistema.Word instructionRegisterDoRunning = running.getInstructionRegister();
+        Word instructionRegisterDoRunning = running.getInstructionRegister();
         Interrupts interruptsDoRunning = running.getInterrupt();
 
         cpu.setContext(programCounterDoRunning, paginasAlocadasDoRunning, registradoresdoRunning, instructionRegisterDoRunning, interruptsDoRunning);

@@ -1,7 +1,7 @@
 public class CPU {
     // característica do processador: contexto da CPU ...
     private int pc;            // ... composto de program counter,
-    private Sistema.Word ir;            // instruction register,
+    private Word ir;            // instruction register,
     private int[] reg;        // registradores da CPU
     public int maxInt;          // criado para podermos simular overflow
     private int[] paginasAlocadas;
@@ -17,10 +17,10 @@ public class CPU {
 
     private InterruptHandler interruptHandler;
 
-    private Sistema.Word[] m;   // CPU acessa MEMORIA, guarda referencia 'm' a ela. memoria nao muda. ee sempre a mesma.
+    private Word[] m;   // CPU acessa MEMORIA, guarda referencia 'm' a ela. memoria nao muda. ee sempre a mesma.
 
-    public CPU(Sistema.Word[] _m, int tamPaginaMemoria, int maxInt, int deltaMax, int [] reg, Interrupts interrupts,
-               Sistema.Word ir, InterruptHandler interruptHandler) {     // ref a MEMORIA e interrupt handler passada na criacao da CPU
+    public CPU(Word[] _m, int tamPaginaMemoria, int maxInt, int deltaMax, int [] reg, Interrupts interrupts,
+               Word ir, InterruptHandler interruptHandler) {     // ref a MEMORIA e interrupt handler passada na criacao da CPU
         m = _m;                // usa o atributo 'm' para acessar a memoria.
         reg = new int[10];        // aloca o espaço dos registradores
         this.maxInt = maxInt;          // números aceitos -100_000 até 100_000
@@ -35,7 +35,7 @@ public class CPU {
         this.interruptHandler = interruptHandler;
     }
 
-    public void setContext(int _pc, int [] paginasAlocadas, int [] registradores, Sistema.Word instructionRegister, Interrupts interrupt) {  // no futuro esta funcao vai ter que ser
+    public void setContext(int _pc, int [] paginasAlocadas, int [] registradores, Word instructionRegister, Interrupts interrupt) {  // no futuro esta funcao vai ter que ser
         pc = _pc;                                   // limite e pc (deve ser zero nesta versão)
         this.paginasAlocadas = paginasAlocadas;
         this.reg = registradores;
@@ -78,11 +78,11 @@ public class CPU {
         return pc;
     }
 
-    public Sistema.Word getIr(){
+    public Word getIr(){
         return ir;
     }
 
-    private void dump(Sistema.Word w) {
+    private void dump(Word w) {
         System.out.print("[ ");
         System.out.print(w.opc);
         System.out.print(", ");

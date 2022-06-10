@@ -4,10 +4,10 @@ public class PCB {
     public int programCounter;
     public int[] paginasAlocadas;
     public int[] registradores;
-    public Sistema.Word instructionRegister;
+    public Word instructionRegister;
     public Interrupts interrupt;
 
-    public PCB(int id, int[]paginasAlocadas, int pc, int [] reg, Sistema.Word ir, Interrupts interrupt) {
+    public PCB(int id, int[]paginasAlocadas, int pc, int [] reg, Word ir, Interrupts interrupt) {
         this.id= id;
         this.paginasAlocadas = paginasAlocadas;
         this.programCounter = pc;
@@ -32,7 +32,7 @@ public class PCB {
         return registradores;
     }
 
-    public Sistema.Word getInstructionRegister(){
+    public Word getInstructionRegister(){
         return instructionRegister;
     }
 
@@ -40,7 +40,7 @@ public class PCB {
         return interrupt;
     }
 
-    public void setContext (int programCounter, int[] registradores, Sistema.Word instructionRegister, Interrupts interrupt){
+    public void setContext (int programCounter, int[] registradores, Word instructionRegister, Interrupts interrupt){
         this.programCounter = programCounter;
         this.registradores =registradores;
         this.instructionRegister = instructionRegister;

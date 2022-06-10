@@ -1,6 +1,6 @@
 public class GerenciadorMemoria {
 
-    public Sistema.Word[] mem;
+    public Word[] mem;
     private int tamPagina;
     private int tamFrame;
     private int nroFrames;
@@ -8,7 +8,7 @@ public class GerenciadorMemoria {
     //private int quantidadeDePaginasUsadas; // só para debug
     public int [] framesAlocados;
 
-    public GerenciadorMemoria(Sistema.Word[] mem, int tamPagina) {
+    public GerenciadorMemoria(Word[] mem, int tamPagina) {
         this.mem = mem;
         this.tamPagina = tamPagina;
         tamFrame = tamPagina;
@@ -34,7 +34,7 @@ public class GerenciadorMemoria {
         return free;
     }
 
-    public void dump(Sistema.Word w) {
+    public void dump(Word w) {
         System.out.print("[ ");
         System.out.print(w.opc);
         System.out.print(", ");
@@ -46,7 +46,7 @@ public class GerenciadorMemoria {
         System.out.println("  ] ");
     }
 
-    public void dumpMem(Sistema.Word[] m, int ini, int fim) {
+    public void dumpMem(Word[] m, int ini, int fim) {
         for (int i = ini; i < fim; i++) {
             System.out.print(i);
             System.out.print(":  ");
@@ -62,7 +62,7 @@ public class GerenciadorMemoria {
         return quantidade;
     }
 
-    public void dumpMemoriaUsada(Sistema.Word[] m) {
+    public void dumpMemoriaUsada(Word[] m) {
         int fim = getQuantidadePaginasUsadas() * tamPagina;
         for (int i = 0; i < fim; i++) {
             System.out.print(i);
@@ -71,7 +71,7 @@ public class GerenciadorMemoria {
         }
     }
 
-    public void dumpPagina (Sistema.Word[]m, int pagina){
+    public void dumpPagina (Word[]m, int pagina){
         int ini = tamPagina * pagina;
         int fim = ini + tamPagina;
         for (int i = ini; i < fim; i++) {
@@ -83,7 +83,7 @@ public class GerenciadorMemoria {
 
 
     // retorna -1 se não conseguir alocar, ou um array com os frames alocadas
-    public int[] aloca(Sistema.Word[] programa) {
+    public int[] aloca(Word[] programa) {
         int quantidadePaginas = programa.length / tamPagina;
         if (programa.length % tamPagina > 0) quantidadePaginas++; // vê se ainda tem código além da divisão inteira
         framesAlocados = new int[quantidadePaginas];
