@@ -23,7 +23,7 @@ public class Sistema {
     private Word[] memory;
     private CPU cpu;
 
-    public Sistema(int tamMemoria, int tamanhoPagina, int maxInt, int quantidadeRegistradores, int deltaMax){   // a VM com tratamento de interrupções
+    public Sistema(int tamMemoria, int tamanhoPagina, int maxInt, int quantidadeRegistradores, int deltaMax, int sleep){   // a VM com tratamento de interrupções
         registradores = new int[quantidadeRegistradores];
         interrupt = Interrupts.INT_NONE;
         instructionRegister = new Word(Opcode.___,-1,-1,-1);
@@ -37,7 +37,7 @@ public class Sistema {
         this.interruptHandler = new InterruptHandler();
 
         // cpu
-        cpu = new CPU(memory, tamanhoPagina, maxInt, deltaMax, registradores, interrupt, instructionRegister, interruptHandler);
+        cpu = new CPU(memory, tamanhoPagina, maxInt, deltaMax, registradores, interrupt, instructionRegister, interruptHandler, sleep);
 
         progs = new Programas();
 
@@ -71,7 +71,7 @@ public class Sistema {
         return idDoProcessoCriado;
     }
 
-    public void executa(int processId) {
+    public void executa(int processId) throws InterruptedException {
         System.out.println("Iniciando execução do processo");
         int [] paginasAlocadas = gp.getPaginasAlocadas(processId);
         if (paginasAlocadas[0]==-1){
@@ -122,7 +122,11 @@ public class Sistema {
 
         cpu.setContext(programCounterDoRunning, paginasAlocadasDoRunning, registradoresdoRunning, instructionRegisterDoRunning, interruptsDoRunning);
 
-        cpu.run();
+        try {
+            cpu.run();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         System.out.println("---------------------------------- Escalonador executado ");
         //gm.dumpMemoriaUsada(vm.m);
     }

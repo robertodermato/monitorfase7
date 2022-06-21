@@ -27,7 +27,17 @@ public class InterruptHandler {
     }
 
     public int traduzEndereco (int endereco){
-        int [] paginasAlocadas = gerMem.getFramesAlocados();
+        int [] paginasAlocadas = gerProc.running.paginasAlocadas;
+
+        /*
+        System.out.println("Fazendo tradução do endereço para o trap");
+        System.out.print("Páginas alocadas: ");
+        for (int i =0; i<paginasAlocadas.length; i++){
+            System.out.print(paginasAlocadas[i] + " ");
+        }
+        System.out.println(" ");
+         */
+
         try {
             return (paginasAlocadas[(endereco / 16)] * 16) + (endereco % 16);
         } catch(ArrayIndexOutOfBoundsException e) {
@@ -38,7 +48,7 @@ public class InterruptHandler {
     public boolean handleInterrupt(int[] registers, Word instructionRegister, Word[] memory, int programCounter, Interrupts interrupts) {
         switch (interrupts) {
             case INT_SCHEDULER:
-                System.out.println("Escalonador acionado");
+                System.out.println("Escalonador acionado - irá executar agora o processo: " + gerProc.running.id + " - " + gerProc.running.nomeDoPrograma);
                 escalonador.runEscalonador(programCounter, registers, instructionRegister, interrupts, gerProc.running.getPaginasAlocadas());
                 return true;
 
@@ -49,8 +59,8 @@ public class InterruptHandler {
 
                 // vê se ainda tem algum processo na lista e deixa esse como sendo o running
                 if (gerProc.prontos.size()>0){
-                    if (gerProc.posicaoEscalonador>0) gerProc.posicaoEscalonador = gerProc.posicaoEscalonador - 1;
-                    gerProc.running = gerProc.prontos.get(gerProc.posicaoEscalonador);
+                    if (escalonador.posicaoEscalonador>0) escalonador.posicaoEscalonador = escalonador.posicaoEscalonador - 1;
+                    gerProc.running = gerProc.prontos.get(escalonador.posicaoEscalonador);
                     gerProc.setCPUforRunningProcess();
                     return true;
                 }
@@ -87,6 +97,7 @@ public class InterruptHandler {
                     int address_destiny = traduzEndereco(registers[9]);
                     System.out.println("Insira um número:");
                     int value_to_be_written = in.nextInt();
+                    System.out.println("Endereço de destino = " + address_destiny);
                     memory[address_destiny].p = value_to_be_written;
                     return true;
                 }

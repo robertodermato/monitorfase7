@@ -2,7 +2,7 @@ import java.util.LinkedList;
 
 public class Escalonador {
 
-    private int posicaoEscalonador;
+    public int posicaoEscalonador;
     private  GerenciadorProcessos gp;
 
     public Escalonador(GerenciadorProcessos gp){
@@ -11,6 +11,8 @@ public class Escalonador {
     }
 
     public void runEscalonador(int programCounter, int [] registradores, Word instructionRegister, Interrupts interrupt, int[] paginasAlocadas){
+        System.out.println("Posição escalonador: " + posicaoEscalonador);
+        System.out.println("tamanho da linked list de prontos = " + gp.prontos.size());
         gp.running = gp.prontos.get(posicaoEscalonador);
 
         // debug
@@ -26,6 +28,15 @@ public class Escalonador {
              */
 
         // seta as variáveis do processo atual com estado atual da CPU
+        if (interrupt == Interrupts.INT_SYSTEM_CALL){
+            System.out.println("System call");
+        }
+        else if (interrupt == Interrupts.INT_NONE){
+            System.out.println("Interrupts none");
+        }
+        else if (interrupt == Interrupts.INT_SCHEDULER){
+            System.out.println("Escalonador int");
+        }
         gp.running.setContext(programCounter, registradores, instructionRegister, interrupt);
 
         // para poder ciclar a posição do escalonador

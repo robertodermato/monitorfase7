@@ -7,6 +7,8 @@ public class CPU {
     private int[] paginasAlocadas;
     private int tamPaginaMemoria;
 
+    private int sleep;
+
     // usado pelo escalonador
     int delta;
     int deltaMax;
@@ -20,7 +22,7 @@ public class CPU {
     private Word[] m;   // CPU acessa MEMORIA, guarda referencia 'm' a ela. memoria nao muda. ee sempre a mesma.
 
     public CPU(Word[] _m, int tamPaginaMemoria, int maxInt, int deltaMax, int [] reg, Interrupts interrupts,
-               Word ir, InterruptHandler interruptHandler) {     // ref a MEMORIA e interrupt handler passada na criacao da CPU
+               Word ir, InterruptHandler interruptHandler, int sleep) {     // ref a MEMORIA e interrupt handler passada na criacao da CPU
         m = _m;                // usa o atributo 'm' para acessar a memoria.
         reg = new int[10];        // aloca o espaço dos registradores
         this.maxInt = maxInt;          // números aceitos -100_000 até 100_000
@@ -28,6 +30,7 @@ public class CPU {
         this.reg = reg;
         this.interrupts = interrupts;
         this.ir = ir;
+        this.sleep = sleep;
 
         delta = 0;
         this.deltaMax = deltaMax;
@@ -156,10 +159,12 @@ public class CPU {
         interruptHandler.handleInterrupt(reg, ir, m, pc, interrupts);
     }
 
-    public void run() {
+    public void run() throws InterruptedException {
 
         boolean run = true;
         while (run) {
+
+            Thread.sleep(sleep);
             // FETCH
 
             //System.out.println("rodando a cpu");

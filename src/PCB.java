@@ -6,6 +6,7 @@ public class PCB {
     public int[] registradores;
     public Word instructionRegister;
     public Interrupts interrupt;
+    public String nomeDoPrograma;
 
     public PCB(int id, int[]paginasAlocadas, int pc, int [] reg, Word ir, Interrupts interrupt) {
         this.id= id;
@@ -18,6 +19,10 @@ public class PCB {
 
     public int[] getPaginasAlocadas(){
         return this.paginasAlocadas;
+    }
+
+    public void setNomeDoPrograma(String nomeDoPrograma){
+        this.nomeDoPrograma = nomeDoPrograma;
     }
 
     public int getId(){

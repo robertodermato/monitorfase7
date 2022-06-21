@@ -11,11 +11,12 @@ public class App {
         int maxInt = 100_000;
         int quantidadeRegistradores = 10;
         int deltaMax = 5; // usado pelo escalonador para interromper a CPU a cada x ciclos
+        int sleep = 75; // para reduzir velocidade do processador e ver o escalonador rodando
 
-        Sistema s = new Sistema(tamanhoDamemoria, tamanhoDaPaginadeMemoria, maxInt, quantidadeRegistradores, deltaMax);
+        Sistema s = new Sistema(tamanhoDamemoria, tamanhoDaPaginadeMemoria, maxInt, quantidadeRegistradores, deltaMax, sleep);
 
-        BootAnimation ba = new BootAnimation();
-        ba.load();
+        //BootAnimation ba = new BootAnimation();
+        //ba.load();
 
         Scanner in = new Scanner(System.in);
 
@@ -64,6 +65,9 @@ public class App {
                     }
                     else if (arg.equals("bub")){
                         s.cria(Sistema.progs.bubbleSort);
+                    }
+                    else if (arg.equals("fain")) {
+                        s.cria(Sistema.progs.fatorialComInput);
                     }
                     else{
                         System.out.println("Programa desconhecido");

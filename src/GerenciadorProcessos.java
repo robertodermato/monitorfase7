@@ -9,7 +9,6 @@ public class GerenciadorProcessos {
     public PCB running;
 
     private int process_id;
-    public int posicaoEscalonador;
     public int tamPagina;
 
     public CPU cpu;
@@ -25,7 +24,6 @@ public class GerenciadorProcessos {
         this.prontos = new LinkedList<>();
         this.bloqueados = new LinkedList<>();
 
-        this.posicaoEscalonador = 0;
         this.tamPagina = gm.getTamPagina();
     }
 
@@ -71,9 +69,23 @@ public class GerenciadorProcessos {
         return processo;
     }
 
+    public String stringfy(Word[] programa){
+        String programName = "";
+
+        if (programa == Sistema.progs.fibonacci10) programName = "Fibonacci";
+        if (programa == Sistema.progs.fatorial) programName = "Fatorial";
+        if (programa == Sistema.progs.bubbleSort) programName = "Bubble Sort";
+        if (programa == Sistema.progs.fatorialComInput) programName = "Fatorial com Input";
+
+
+        return programName;
+        }
+
     // Se o processo não foi criado por falta de memória, retorna -1, caso contrário retorna o número do processo criado
     public int criaProcesso(Word[] programa){
         int[] paginasAlocadas = gm.aloca(programa);
+
+        String nomeDoPrograma = stringfy(programa);
 
         // Se o processo não foi criado por falta de memória, retorna -1
         if (paginasAlocadas[0]==-1){
@@ -97,6 +109,7 @@ public class GerenciadorProcessos {
 
         // referências problemáticas aqui??? vm.cpu...
         PCB processo = new PCB(process_id, paginasAlocadas, 0, new int[10], new Word(Opcode.___,-1,-1,-1), Interrupts.INT_NONE);
+        processo.setNomeDoPrograma(nomeDoPrograma);
         //PCB processo = new PCB(process_id, paginasAlocadas, vm.cpu.getPc(), vm.cpu.getReg(), vm.cpu.getIr(), vm.cpu.getInterrupts());
         prontos.add(processo);
 
